@@ -1,0 +1,34 @@
+CREATE DATABASE AtividadeDB
+GO
+
+USE AtividadeDB
+GO
+
+CREATE TABLE Cliente
+(
+	id INT IDENTITY(1,1) CONSTRAINT PK_Clientes PRIMARY KEY,
+	nome VARCHAR(100) NOT NULL,
+	rg VARCHAR(20) NOT NULL CONSTRAINT UQ_Clientes_RG UNIQUE,
+	endereco VARCHAR(255) NULL
+);
+GO
+
+CREATE TABLE Chales
+(
+	id INT IDENTITY(1,1) CONSTRAINT PK_Chales PRIMARY KEY,
+	localização VARCHAR(100) NOT NULL,
+	capacidade INT NOT NULL CONSTRAINT CK_Chales_Capacidade CHECK (capacidade > 0 ),
+	valorDiaria DECIMAL(10,2) NOT NULL CONSTRAINT CK_Chales_ValorDiaria CHECK (valorDiaria > 0)
+);
+GO
+
+--fazer depois essa
+CREATE TABLE Hospedagem(
+	id INT IDENTITY(1,1) CONSTRAINT PK_Hospedagens PRIMARY KEY,
+	cliente_id INT NOT NULL CONSTRAINT FK_Hosp_Clientes FOREIGN KEY REFERENCES Cliente (id),
+	chale_id INT NOT NULL CONSTRAINT FK_Hosp_Chales FOREIGN KEY REFERENCES Chales (id),
+	dataInicio DATETIME NOT NULL,
+	dataFim DATETIME NOT NULL,
+	desconto DECIMAL (5,2) DEFAULT 0.00 --DESCONTO NÃO SER MENOR QUE ZERO OU MAIOR QUE 100
+); 
+GO
